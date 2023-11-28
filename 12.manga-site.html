@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANIME SITE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: content-box;
+            background-repeat: no-repeat;
+            margin: 0.125rem;
+        }
+
+        body {
+            background-color: rgba(36, 36, 40, 255);
+            margin-top: 0.625rem;
+            background-repeat: no-repeat;
+
+        }
+
+        .fade-img {
+            /* /* background-repeat: no-repeat; 
+            background-image: url(home-page-bg.png); 
+            -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 1)), to(rgba(0, 0, 0, 0)));
+            overflow: hidden;
+            background-size: cover;
+            position: relative; 
+            width: 93.25;
+            height: 55px; */
+        }
+
+        .navbar {
+            background-color: #616060;
+            font-size: medium;
+            border: 0.125rem solid #fcf9c6;
+            border-radius: 0.625rem;
+            padding: 0.313rem;
+            color: #ffffff;
+            font-size: 1.563rem;
+            top: 0.313rem;
+            margin-left: 4.375rem;
+            margin-right: 4.375rem;
+            width: auto;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        .home-button:hover {
+            color: rgb(43, 42, 42);
+        }
+
+        .home-button {
+            width: 10%;
+            position: relative;
+        }
+
+        .you-button:hover {
+            color: rgb(43, 42, 42);
+        }
+
+        .you-button {
+            padding-left: 0.625rem;
+            padding-right: 0.625rem;
+            position: relative;
+        }
+
+        .search-box:hover {
+            color: rgb(43, 42, 42);
+        }
+
+        .search-box {
+            width: 50%;
+            margin: auto;
+            position: relative;
+        }
+
+        #search-box-input {
+            width: 100%;
+            background-color: rgba(30, 29, 29, 0.673);
+            font-size: large;
+            border-radius: 8px;
+            padding: 0.5% 1%;
+            color: #fcf9c6;
+        }
+
+        .login-button:hover {
+            color: rgb(43, 42, 42);
+        }
+
+        .login-button {
+            width: 10%;
+            right: 0px;
+            float: inline-end;
+
+        }
+
+        .most-popular {
+            /* background-color: #335060; */
+            font-size: medium;
+            border: 0.3125rem double #37524c;
+            padding: 0.3125rem;
+            color: #fcf9c6;
+            font-size: 1.25rem;
+            width: 5.8203125rem;
+            text-align: center;
+            margin-left: 0.625rem;
+            margin-top: 0.625rem;
+
+        }
+
+        .most-popular-image {
+            background-image: url(homepage.png);
+            position: relative;
+            margin-top: 1.25rem;
+            height: 30rem;
+            width: 100rem;
+            padding-left: 0%;
+            float: inline-start;
+            margin-left: 10rem;
+        }
+
+        .most-popular-title {
+            text-align: center;
+            color: #fcf9c6;
+            position: relative;
+            margin-left: 12rem;
+            margin-top: 14rem;
+            font-size: xx-large;
+            background-color: #242428;
+            width: max-content;
+            padding: 0.625rem;
+            border: #fcf9c6 1px solid;
+
+        }
+
+        #popular-anime {
+            width: auto;
+            height: fit-content;
+            /* gap: var(--size--3); */
+            display: grid;
+            grid-auto-flow: column;
+            /* grid-auto-columns: 23%; */
+            overflow-x: hidden;
+            overscroll-behavior-inline: contain;
+            /* background: var(--surface--2); */
+
+        }
+
+        .snap-inline {
+            scroll-snap-type: inline mandatory;
+            scroll-padding-inline: 0.625rem;
+        }
+
+        .snap-inline>* {
+            scroll-snap-align: start;
+        }
+
+        .anime-popular-left {}
+
+        .anime-popular-image {
+            width: auto !important;
+            height: 31.25rem;
+            overflow: hidden;
+            background-size: cover;
+            position: relative;
+            margin-top: 0.625rem;
+            margin-bottom: 0.938rem;
+            margin-left: 0.625rem;
+            border-radius: 0.625rem;
+            box-shadow: #000000 5px 5px 5px 5px;
+            background: linear-gradient(#242428 0, rgba(36, 36, 40, 0) 100%, #242428 100%);
+            background-size: contain;
+
+        }
+
+        .anime-popular-style {
+            border: 2px solid #fcf9c6;
+            width: 93.25rem;
+            height: fit-content;
+            border-radius: 0.625rem;
+            overflow: hidden;
+            box-shadow: 5px 5px 4px 4px black;
+            margin-left: 1.25rem;
+            margin-top: 0.625rem;
+            position: relative;
+            display: flex;
+            animation: slide 65s infinite;
+
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translate(10rem);
+            }
+
+            9% {
+                transform: translate(0rem);
+            }
+
+            10% {
+                transform: translate(-95.5rem);
+            }
+
+            15% {
+                transform: translate(-96rem);
+            }
+
+            20% {
+                transform: translate(-189.5rem);
+            }
+
+            25% {
+                transform: translate(-190.5rem);
+            }
+
+            30% {
+                transform: translate(-283.5rem);
+            }
+
+            35% {
+                transform: translate(-285.5rem);
+            }
+
+            40% {
+                transform: translate(-379rem);
+            }
+
+            45% {
+                transform: translate(-380.5rem);
+            }
+
+            50% {
+                transform: translate(-474.5rem);
+            }
+
+            55% {
+                transform: translate(-474.5rem);
+            }
+
+            60% {
+                transform: translate(-569rem);
+            }
+
+            65% {
+                transform: translate(-569.5rem);
+            }
+
+            70% {
+                transform: translate(-663.5rem);
+            }
+
+            75% {
+                transform: translate(-664rem);
+            }
+
+            80% {
+                transform: translate(-758.5rem);
+            }
+
+            85% {
+                transform: translate(-759rem);
+            }
+
+            90% {
+                transform: translate(-853.5rem);
+            }
+
+            95% {
+                transform: translate(-854rem);
+            }
+
+            /* 95% {
+                transform: translateX(-947rem);
+            }
+            99%{
+                transform: translate(-948.5rem);
+            } */
+
+        }
+
+        #anime-popular {
+            position: relative;
+            overflow: hidden;
+            margin-top: 6.25rem;
+            height: 31.25rem;
+            width: 20rem;
+
+        }
+
+        .anime-info {
+            display: block;
+            width: 100%;
+            color: #fcf9c6;
+            left: auto;
+            right: auto;
+
+        }
+
+        .anime-popular-title {
+            font-size: xx-large;
+            text-overflow: clip;
+            overflow: hidden;
+            white-space: pre;
+            color: #ffffff;
+            position: relative;
+            text-align: center;
+            margin-top: 1.875rem;
+            margin-bottom: 1.875rem;
+            position: relative;
+
+        }
+
+        #anime-popular-info {
+            font-size: 1.25rem !important;
+            background-color: rgb(74, 74, 74);
+            border-radius: 0.313rem;
+            width: auto;
+            height: auto;
+            color: #fcf9c6;
+            top: auto;
+            bottom: auto;
+            text-align: center;
+        }
+
+        .anime-popular-ep {
+            text-align: center;
+            font-size: x-large;
+            margin-top: 0.625rem;
+            text-align: center;
+            color: #516b65;
+            bottom: 1.25rem;
+
+        }
+
+
+        #anime-popular-description {}
+
+        #anime-popular-id {}
+
+        .ANIME {
+            background-color: #2e4540;
+            font-size: medium;
+            border: 0.250rem double #fcf9c6;
+            padding: 0.313rem;
+            color: rgb(202, 222, 235);
+            font-size: 1.25rem;
+            width: 93.75;
+            text-align: center;
+
+        }
+
+        .element-img {
+            /*background-image: url(vagabond.webp);*/
+            border: 5px double white;
+            background-repeat: no-repeat;
+            height: fit-content;
+            width: 93.25;
+            display: flex;
+            background-color: #00071236;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 1.875rem;
+            overflow: visible;
+            object-fit: cover;
+            box-shadow: 0.625rem 0.625rem 0.625rem 0.625rem #263a36;
+        }
+
+        .info-left {
+            border: 4px solid #fcf9c6;
+            margin: 0.625rem;
+            background-color: #2e4540;
+            width: auto;
+        }
+
+        #anime-img {
+            border: 0.313rem solid white;
+            height: fit-content !important;
+            width: 25rem !important;
+            object-fit: cover;
+            overflow: hidden;
+            margin-right: 1.25rem;
+            margin-bottom: 0.625rem;
+            margin-left: 0.938rem;
+            margin-top: 0.938rem;
+            box-shadow: 0.313rem 0.313rem 0.313rem 0.313rem #041d1f;
+        }
+
+
+        #release-date {
+            text-align: right;
+            font-size: 0.938rem;
+            color: #fcf9c6;
+            margin-right: 0.625rem;
+        }
+
+        #total-ep {
+            width: 100%;
+            text-align: right;
+            font-size: 0.938rem;
+            color: #fcf9c6;
+        }
+
+        #total-episodes {
+            width: 100%;
+            text-align: right;
+            color: #fcf9c6;
+            font-size: 1.125rem;
+            margin-right: 0.625rem;
+        }
+
+        .genre-box {
+            background-color: rgb(104, 104, 187);
+            width: max-content;
+            height: auto;
+            color: yellow !important;
+            border-radius: 5px;
+        }
+
+        .anime-genre-text {
+            font-size: 1.875rem;
+            color: rgb(202, 222, 235);
+            margin-left: 0.625rem;
+        }
+
+        #genre {
+            font-size: 1.25rem;
+            color: rgb(202, 222, 235);
+            margin-left: 15px;
+            margin-bottom: 0.625rem;
+
+        }
+
+        .element-img-text {
+            bottom: 5rem;
+            font-size: 2.5rem;
+            font-family: 'Noto Sans JP', sans-serif;
+            transform: rotate(-90deg);
+            overflow: hidden;
+            display: flex;
+            background-color: white;
+            position: relative;
+
+        }
+
+        #anime-title {
+            color: rgb(0, 0, 0);
+            font-size: 3.125rem;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #fcf9c6;
+            margin-left: 5px;
+            margin-right: 13px;
+            border: 5px double #041d1f;
+            /* width: 60rem; */
+        }
+
+        .blur {
+            height: fit-content;
+            width: fit-content;
+            overflow: hidden;
+        }
+
+        .about {
+            height: fit-content;
+            width: auto;
+            /* background-image: url(vagabond-mountains.jpg); */
+            background-size: cover;
+            /* filter: blur(8px);
+            -webkit-filter: blur(8px); */
+
+        }
+
+        /* .blur-img-text {
+            position: relative;
+            top: 0px;
+            height: fit-content;
+            width: fit-content;
+        } */
+
+        .element-summary {
+            padding-left: 0.625rem;
+            padding-right: 0.625rem;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            font-size: larger;
+            color: #fcf9c6;
+            margin: 12px;
+            background-color: #041d1f;
+            width: max-content;
+            border-radius: 0.625rem;
+            box-shadow: #516b65 2px 2px 2px 2px;
+
+        }
+
+        #anime-plot {
+            margin-left: 0.625rem;
+            margin-right: 18px;
+            padding: 0.625rem;
+            font-size: 20px;
+            font-style: oblique;
+            color: rgb(202, 222, 235);
+            background-color: #041d1f;
+            border-radius: 0.625rem;
+            box-shadow: 2px 2px 4px 4px #516b65;
+        }
+
+
+        .container {
+            background-color: #37524c;
+            border: 3px solid #000000;
+            /*padding-top: 9px;
+            padding-bottom: 9px;
+            padding-left: 9px;*/
+            /* padding: 9px 0px 9px 9px; top right bottom left*/
+            /*x and y*/
+            padding: 0.625rem 0.625rem;
+            margin-top: 15px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.625rem;
+            width: 250px;
+            height: max-content;
+            color: white;
+            box-shadow: 5px 5px #fcf9c6;
+        }
+
+        #status {
+            margin: auto;
+            padding-right: 0.625rem;
+        }
+
+        .submit {
+            background-color: #37524c;
+            border: 5px double #fcf9c6;
+            border-radius: 0.625rem;
+            width: max-content;
+            height: max-content;
+            color: white;
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <form name="submit-to-google-sheet">
+
+        <div class="fade-img">
+            <p></p>
+            <div class="navbar">
+                <div class="home-button">
+                    <strong>Home</strong>
+                </div>
+                <div class="you-button">
+                    <strong>You</strong>
+                </div>
+                <div class="search-box">
+                    <input placeholder="Search Manga" id="search-box-input" name="title"></input>
+                </div>
+                <div class="login-button">
+                    <strong>Login</strong>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="most-popular">
+            <p>MOST POPULAR</p>
+        </div> -->
+        <div class="popular-header snap-inline" id="popular-anime">
+            <div>
+                <div class="anime-popular-style">
+                    <div class="anime-popular-image">
+
+                    </div>
+                    <div class="anime-popular-title">
+                    </div>
+                    <div class="most-popular-image">
+                        <div class="most-popular-title">
+                            <p>MOST POPULAR ANIME CURRENTLY AIRING</p>
+                        </div>
+                    </div>
+                    <!-- <div class="anime-popular-info">
+                        <p></p>
+                    </div> -->
+                </div>
+            </div>
+            <div id="anime-popular-description"></div>
+        </div>
+        <br>
+        <br>
+        <div class="ANIME">
+            <p>INFO</p>
+        </div>
+        <div class="element-img">
+            <div class="info-left">
+                <img src="/vagabond2.webp" id="anime-img">
+                <div>
+                    <p id="release-date">September 3, 1998</p>
+                    <p id="total-ep">
+                        TOTAL-EPISODES:<span id="total-episodes">12</span>
+                    </p>
+                    <div id="anime-genre">
+                        <p class="anime-genre-text"> GENRE:</p>
+                        <p id="genre" class="genre-box"> Action</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about" class="element-img">
+                <div class="blur-img-text" class="element-img">
+                    <p>
+                    <ul type="circle" id="anime-title">VAGABOND</ul>
+                    </p>
+                    <label for="summary"></label>
+                    <summary class="element-summary">SUMMARY :</summary>
+                    <p id="anime-plot">Growing up in the late 15th century Sengoku era Japan, Shinmen Takezo is shunned
+                        by
+                        the
+                        local villagers as a devil child due to his wild and violent nature. Running away from home with
+                        a
+                        fellow boy at age 17, Takezo joins the Toyotomi army to fight the Tokugawa clan at the battle of
+                        Sekigahara.
+                    </p>
+                    <br>
+                    <br>
+                    <div class="container">
+                        <label for="chapters-read">EP WATCHED</label>
+                        <div>
+                            <input type="number" id="chapters-read" name="chapters-read">
+                            <br>
+                            <br>
+                            WATCHING<input type="radio" name="watching" id="status">COMPLETED<input type="radio"
+                                name="completed" id="status">
+                        </div>
+                    </div>
+                    <div class="container">
+                        <label for="rating-inp">RATING</label>
+                        <select name="rating" id="rating-inp" name="rating">
+                            <option value="worst">worst</option>
+                            <option value="very bad">verybad</option>
+                            <option value="poor">poor</option>
+                            <option value="neutral">neutral</option>
+                            <option value="good" selected>good</option>
+                            <option value="very good">great</option>
+                            <option value="EXCELLENT">EXCELLENT</option>
+                        </select>
+                    </div>
+                    <div class="container">
+                        <label for="your-score">SCORE</label>
+                        <select id="your-score" name="score">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="container">
+                        <details>
+                            <label for="review-inp">:</label>
+                            <summary id="review-inp">REVIEW</summary>
+                            <textarea name="review" cols="30" rows="3" id="PLS GIVE US YOUR REVIEW"></textarea>
+                        </details>
+                    </div>
+                    <div class="submit">
+                        <input type="submit" name="submit" required>
+                        <span id="submitted"></span>
+                        <br>
+                        <input type="reset" name="reset">
+                    </div>
+                </div>
+            </div>
+    </form>
+
+
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz9YKD09pQo5IFTUAAzGGXVAhr45-XDzRcLgFSHbjOMpx5x0bS9MLln4Flq-lRJ5C5d/exec'
+        const form = document.forms['submit-to-google-sheet']
+        // const submitted = document.getElementById('submitted')
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => console.log('Success!', response))
+                .catch(error => console.error('Error!', error.message))
+        })
+        // form.addEventListener('submit', e => {
+        //     e.preventDefault()
+        //     fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+        //         .then(response => {
+        //             submitted.innerHTML = "submitted"
+        //         })
+        //         .then(response => {
+        //             reset.innerHTML = "reset"
+        //         })
+        //         .catch(error => console.error('Error!', error.message))
+        // })
+    </script>
+    </div>
+    </div>
+    <script>
+        searchbox = document.getElementById('search-box-input');
+        searchbox.addEventListener('keyup', function (event) {
+            if (event.key === 'Enter') {
+                url = 'https://api.consumet.org/anime/gogoanime/' + searchbox.value;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        manga_id = data['results'][0]['id'];
+                        url = 'https://api.consumet.org/anime/gogoanime/info/' + manga_id;
+                        fetch(url)
+                            .then(response => response.json())
+                            .then(data => {
+                                manga_description = data['description'];
+                                plot = document.getElementById('anime-plot');
+                                plot.textContent = manga_description;
+                                console.log(manga_description);
+
+                                manga_description = data['title'];
+                                title = document.getElementById('anime-title');
+                                title.textContent = manga_description;
+                                console.log(title.textContent);
+
+                                manga_description = data['image']
+                                image = document.getElementById('anime-img');
+                                image.src = manga_description;
+                                console.log(manga_description);
+
+                                manga_description = data['genres']
+                                genre_div = document.getElementById('anime-genre');
+                                for (let i = 0; i < manga_description.length; i++) {
+                                    console.log(manga_description[i]);
+
+
+                                    tag_title_div = document.createElement('div');
+                                    tag_title = document.createElement('p');
+                                    tag_title.className = 'anime-genre-text';
+                                    tag_title.textContent = manga_description[i]['genres'];
+
+                                    tag_title_div.appendChild(tag_title);
+                                    genre_div.appendChild(tag_title_div);
+
+                                }
+
+
+
+
+                                genre.textContent = manga_description;
+                                manga_description = data['releaseDate'];
+                                releaseDate = document.getElementById('release-date');
+                                releaseDate.textContent = manga_description;
+                                manga_description = data['totalEpisodes'];
+                                totalEpisode = document.getElementById('total-episodes');
+                                totalEpisode.textContent = manga_description;
+
+                                // manga_description = data['title'];
+                                // title = document.getElementById('anime-title-inp');
+                                // title.textContent = manga_description;
+
+                            })
+                    })
+            }
+        })
+    </script>
+    <script>
+        url = 'https://api.consumet.org/anime/gogoanime/top-airing';
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                popular_anime = data['results'];
+                popular_anime_div = document.getElementById('popular-anime');
+
+                for (let i = 0; i < popular_anime.length; i++) {
+                    // Create the card element
+                    card = document.createElement('div');
+                    card.className = 'anime-popular-style';
+                    console.log(card);
+
+                    // Create and set the card image
+
+                    anime_left_div = document.createElement('div');
+                    anime_left_div.className = 'anime-popular-left';
+
+                    card_image = document.createElement('img');
+                    card_image.className = 'anime-popular-image';
+                    card_image.src = popular_anime[i]['image'];
+                    anime_left_div.appendChild(card_image);
+                    card.appendChild(anime_left_div);
+                    console.log(popular_anime);
+
+                    // Create and set the card title
+
+                    anime_info_div = document.createElement('div');
+                    anime_info_div.className = 'anime-info';
+
+                    card_title = document.createElement('p');
+                    card_title.className = 'anime-popular-title';
+                    card_title.textContent = popular_anime[i]['title'];
+                    anime_info_div.appendChild(card_title);
+                    card.appendChild(anime_info_div);
+
+                    // Append the card to the popular anime container
+                    popular_anime_div.appendChild(card);
+                }
+
+                // Fetch descriptions for each anime and add to respective cards
+                for (let i = 0; i < popular_anime.length; i++) {
+                    anime_popular = popular_anime[i]['id'];
+                    url = 'https://api.consumet.org/anime/gogoanime/info/' + anime_popular;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            anime_popular_des = data['description'];
+                            console.log(anime_popular_des);
+
+                            // Find the corresponding card and add the description
+                            cards = document.getElementsByClassName('anime-info');
+                            cards[i].innerHTML += '<p id="anime-popular-info">' + anime_popular_des + '</p>';
+                        });
+                }
+                for (let i = 0; i < popular_anime.length; i++) {
+                    anime_popular = popular_anime[i]['id'];
+                    url = 'https://api.consumet.org/anime/gogoanime/info/' + anime_popular;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            anime_popular_des = data['totalEpisodes'];
+
+                            // Find the corresponding card and add the description
+                            cards = document.getElementsByClassName('anime-info');
+                            cards[i].innerHTML += '<p class="anime-popular-ep">' + 'total-episodes : ' + anime_popular_des + '</p>';
+                        });
+                }
+                for (let i = 0; i < popular_anime.length; i++) {
+                    anime_popular = popular_anime[i]['id'];
+                    url = 'https://api.consumet.org/anime/gogoanime/info/' + anime_popular;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            anime_popular_des = data['releaseDate'];
+
+                            // Find the corresponding card and add the description
+                            cards = document.getElementsByClassName('anime-info');
+                            cards[i].innerHTML += '<p class="anime-popular-ep">' + 'release date : ' + anime_popular_des + '</p>';
+                        });
+                }
+                for (let i = 0; i < popular_anime.length; i++) {
+                    anime_popular = popular_anime[i]['id'];
+                    url = 'https://api.consumet.org/anime/gogoanime/info/' + anime_popular;
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            anime_popular_des = data['type'];
+
+                            // Find the corresponding card and add the description
+                            cards = document.getElementsByClassName('anime-info');
+                            cards[i].innerHTML += '<p class="anime-popular-ep">' + 'type : ' + anime_popular_des + '</p>';
+                        });
+                }
+            });
+
+
+
+    </script>
+
+
+</body>
+
+</html>
