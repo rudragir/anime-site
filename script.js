@@ -1,5 +1,4 @@
-
-    // ---------- CONFIG ----------
+// ---------- CONFIG ----------
     const JIKAN_BASE = 'https://api.jikan.moe/v4';
     const scriptURL = 'https://script.google.com/macros/s/AKfycbzGtnOcQYRIQMJIgj-PNyLkfJM4tBXySu_Mq0ECZHAD1WH0SRQhNGvjuqpEeGxnw1Os/exec';
 
@@ -174,28 +173,180 @@
       });
     });
 
-    // ---------- YOU LIST (localStorage) ----------
+    // ---------- YOU LIST — storage declarations (must be before Firebase auth block) ----------
     const YOU_LIST_KEY = 'mangaWorldYouList';
+    let youListCache = [];
 
-    function getYouList(){
+    function loadLocalList(){
       try{ return JSON.parse(localStorage.getItem(YOU_LIST_KEY)) || []; }
       catch(e){ return []; }
     }
-
-    function saveYouList(list){
+    function saveLocalList(list){
       localStorage.setItem(YOU_LIST_KEY, JSON.stringify(list));
     }
 
+    // ---------- FIREBASE AUTH + CLOUD SYNC ----------
+    let currentUser = null;
+    let auth = null;
+    let db = null;
+
+    function isFirebaseConfigured(){
+      return FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.startsWith('PASTE_');
+    }
+
+    if(isFirebaseConfigured() && window.firebase){
+      try{
+        firebase.initializeApp(FIREBASE_CONFIG);
+        auth = firebase.auth();
+        db = firebase.firestore();
+      }catch(err){ console.error('Firebase init failed:', err); }
+    }
+
+    const authModalOverlay = document.getElementById('auth-modal-overlay');
+    const authForm = document.getElementById('auth-form');
+    const authError = document.getElementById('auth-error');
+    const authTitle = document.getElementById('auth-modal-title');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const authSwitchText = document.getElementById('auth-switch-text');
+    const authSwitchBtn = document.getElementById('auth-switch-btn');
+    let authMode = 'login'; // 'login' | 'signup'
+
+    function openAuthModal(){
+      authError.textContent = '';
+      authForm.reset();
+      authModalOverlay.style.display = 'flex';
+      document.getElementById('auth-cloud-warning').style.display = isFirebaseConfigured() ? 'none' : 'block';
+    }
+    function closeAuthModal(){ authModalOverlay.style.display = 'none'; }
+
+    function setAuthMode(mode){
+      authMode = mode;
+      if(mode === 'login'){
+        authTitle.textContent = 'LOG IN';
+        authSubmitBtn.textContent = 'LOG IN';
+        authSwitchText.textContent = 'New here?';
+        authSwitchBtn.textContent = 'Create an account';
+      }else{
+        authTitle.textContent = 'SIGN UP';
+        authSubmitBtn.textContent = 'CREATE ACCOUNT';
+        authSwitchText.textContent = 'Already have an account?';
+        authSwitchBtn.textContent = 'Log in instead';
+      }
+      authError.textContent = '';
+    }
+
+    document.getElementById('login-open-btn').addEventListener('click', () => { setAuthMode('login'); openAuthModal(); });
+    document.getElementById('auth-close-btn').addEventListener('click', closeAuthModal);
+    authModalOverlay.addEventListener('click', (e) => { if(e.target === authModalOverlay) closeAuthModal(); });
+    authSwitchBtn.addEventListener('click', () => setAuthMode(authMode === 'login' ? 'signup' : 'login'));
+
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authError.textContent = '';
+      if(!isFirebaseConfigured() || !auth){
+        authError.textContent = "Cloud login isn't set up yet — see the setup comment near the top of the HTML file.";
+        return;
+      }
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
+      authSubmitBtn.disabled = true;
+      try{
+        if(authMode === 'login'){
+          await auth.signInWithEmailAndPassword(email, password);
+        }else{
+          await auth.createUserWithEmailAndPassword(email, password);
+        }
+        closeAuthModal();
+      }catch(err){
+        authError.textContent = humanizeAuthError(err);
+      }finally{
+        authSubmitBtn.disabled = false;
+      }
+    });
+
+    function humanizeAuthError(err){
+      const code = err.code || '';
+      if(code.includes('email-already-in-use')) return 'That email already has an account — try logging in.';
+      if(code.includes('user-not-found') || code.includes('wrong-password') || code.includes('invalid-credential')) return 'Email or password is incorrect.';
+      if(code.includes('weak-password')) return 'Password should be at least 6 characters.';
+      if(code.includes('invalid-email')) return 'That email address looks invalid.';
+      return err.message || 'Something went wrong — try again.';
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', () => { if(auth) auth.signOut(); });
+
+    async function loadCloudListFor(uid){
+      try{
+        const doc = await db.collection('userLists').doc(uid).get();
+        if(doc.exists && Array.isArray(doc.data().list)) return doc.data().list;
+      }catch(err){ console.error('Cloud load failed:', err); }
+      return null;
+    }
+
+    function refreshAuthUI(){
+      const loginBtn = document.getElementById('login-open-btn');
+      const userChip = document.getElementById('user-chip');
+      if(currentUser){
+        loginBtn.style.display = 'none';
+        userChip.style.display = 'flex';
+        document.getElementById('user-email-label').textContent = currentUser.email;
+      }else{
+        loginBtn.style.display = '';
+        userChip.style.display = 'none';
+      }
+    }
+
+    if(auth){
+      auth.onAuthStateChanged(async (user) => {
+        currentUser = user;
+        refreshAuthUI();
+        if(user){
+          // On login: merge cloud list with whatever's local so nothing's lost,
+          // then treat the merged result as the source of truth going forward.
+          const cloudList = await loadCloudListFor(user.uid);
+          const localList = loadLocalList();
+          if(cloudList){
+            const merged = [...cloudList];
+            localList.forEach(localEntry => {
+              const exists = merged.some(e => e.mode === localEntry.mode && e.title === localEntry.title);
+              if(!exists) merged.push(localEntry);
+            });
+            youListCache = merged;
+          }else{
+            youListCache = localList;
+          }
+          await persistYouList();
+        }else{
+          youListCache = loadLocalList();
+        }
+        if(currentPage === 'you') renderYouList();
+      });
+    }else{
+      youListCache = loadLocalList();
+    }
+
+    // ---------- YOU LIST (localStorage + optional Firebase cloud sync) ----------
+
+    async function persistYouList(){
+      saveLocalList(youListCache);
+      if(currentUser && db){
+        try{
+          await db.collection('userLists').doc(currentUser.uid).set({ list: youListCache, updatedAt: Date.now() });
+        }catch(err){ console.error('Cloud save failed:', err); }
+      }
+    }
+
+    function getYouList(){ return youListCache; }
+
     function upsertYouEntry(entry){
-      const list = getYouList();
-      const i = list.findIndex(e => e.mode === entry.mode && e.title === entry.title);
-      if(i >= 0){ list[i] = entry; } else { list.push(entry); }
-      saveYouList(list);
+      const i = youListCache.findIndex(e => e.mode === entry.mode && e.title === entry.title);
+      if(i >= 0){ youListCache[i] = entry; } else { youListCache.push(entry); }
+      persistYouList();
     }
 
     function removeYouEntry(mode, title){
-      const list = getYouList().filter(e => !(e.mode === mode && e.title === title));
-      saveYouList(list);
+      youListCache = youListCache.filter(e => !(e.mode === mode && e.title === title));
+      persistYouList();
       renderYouList();
     }
 
@@ -343,4 +494,3 @@
       const total = document.getElementById('popular-anime').children.length;
       if(total) updateCarouselButtons(total);
     });
-  

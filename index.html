@@ -8,11 +8,43 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Yuji+Syuku&family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<!--
+  ====================================================================
+  CLOUD LOGIN SETUP (Firebase) — do this once, takes ~3 minutes:
+  1. Go to https://console.firebase.google.com -> Add project (free).
+  2. In the project: Build > Authentication > Get started > enable
+     "Email/Password" sign-in method.
+  3. Build > Firestore Database > Create database > start in
+     "test mode" (you can lock it down later with security rules).
+  4. Project settings (gear icon) > General > "Your apps" > Web (</>)
+     > register app > copy the firebaseConfig object it gives you.
+  5. Paste those values into FIREBASE_CONFIG below, replacing the
+     placeholder strings. Save the file — that's it, login + cloud
+     sync will work immediately.
+  Until you do this, the site still works fully offline using your
+  browser's local storage (no login, just like before).
+  ====================================================================
+-->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+  // 🔧 PASTE YOUR OWN FIREBASE PROJECT CONFIG HERE 🔧
+  const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyADJQBPfwCFStqByOFQUOW31c7nwbeY5CI",
+  authDomain: "anidex-a1641.firebaseapp.com",
+  projectId: "anidex-a1641",
+  storageBucket: "anidex-a1641.firebasestorage.app",
+  messagingSenderId: "616452975839",
+  appId: "1:616452975839:web:1ede6b462b608766bccd6a",
+  measurementId: "G-0X613T07YX"
+};
+</script>
 </head>
 <body>
 
   <nav class="navbar">
-    <div class="logo">迅 ANIDEX</div>
+    <div class="logo">迅 MANGA WORLD</div>
     <div class="page-tabs">
       <button class="page-tab active" data-page="home">HOME</button>
       <button class="page-tab" data-page="you">YOU</button>
@@ -24,8 +56,36 @@
     <div class="search-box">
       <input placeholder="Search an anime title + ENTER..." id="search-box-input">
     </div>
-    <a class="login-button" href="#">Login</a>
+    <div class="auth-box">
+      <button class="login-button" id="login-open-btn">Login</button>
+      <div id="user-chip" style="display:none;">
+        <span id="user-email-label"></span>
+        <button class="logout-button" id="logout-btn">Log out</button>
+      </div>
+    </div>
   </nav>
+
+  <div id="auth-modal-overlay" style="display:none;">
+    <div class="auth-modal">
+      <button class="auth-close" id="auth-close-btn">✕</button>
+      <h2 class="auth-title" id="auth-modal-title">LOG IN</h2>
+      <p id="auth-cloud-warning" class="auth-warning" style="display:none;">
+        Cloud login isn't configured yet — paste your Firebase keys into the HTML (see the setup comment near the top of the file) to enable this.
+      </p>
+      <form id="auth-form">
+        <label class="auth-label" for="auth-email">EMAIL</label>
+        <input class="auth-input" type="email" id="auth-email" required autocomplete="email">
+        <label class="auth-label" for="auth-password">PASSWORD</label>
+        <input class="auth-input" type="password" id="auth-password" required minlength="6" autocomplete="current-password">
+        <p class="auth-error" id="auth-error"></p>
+        <button type="submit" class="pow-btn auth-submit-btn" id="auth-submit-btn">LOG IN</button>
+      </form>
+      <p class="auth-switch">
+        <span id="auth-switch-text">New here?</span>
+        <button type="button" class="auth-link-btn" id="auth-switch-btn">Create an account</button>
+      </p>
+    </div>
+  </div>
 
   <div id="home-page">
   <section class="hero-wrap">
@@ -124,8 +184,6 @@
   </div>
 
   <footer>MANGA WORLD — data via Jikan (MyAnimeList unofficial API) · for demo purposes</footer>
-
-</body>
-
 <script src="script.js"></script>
+</body>
 </html>
